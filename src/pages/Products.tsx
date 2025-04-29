@@ -28,13 +28,15 @@ const Products = () => {
   const [priceRange, setPriceRange] = useState([0, 1500]);
   const [sort, setSort] = useState("featured");
 
-  // Derive all available categories from products
-  const categories = ["", ...new Set(products.map((p) => p.category))];
+  // Derive all available categories from products, but use "all" instead of empty string
+  const allCategoriesOption = "all";
+  const productCategories = [...new Set(products.map((p) => p.category))];
+  const categories = [allCategoriesOption, ...productCategories];
 
   // Filter products based on current filters
   const filteredProducts = products.filter((product) => {
-    // Category filter
-    if (category && product.category !== category) return false;
+    // Category filter - only apply if not "all"
+    if (category && category !== allCategoriesOption && product.category !== category) return false;
     
     // Search filter
     if (
@@ -72,7 +74,7 @@ const Products = () => {
   // Update URL when filters change
   useEffect(() => {
     const params = new URLSearchParams();
-    if (category) params.set("category", category);
+    if (category && category !== allCategoriesOption) params.set("category", category);
     if (searchQuery) params.set("search", searchQuery);
     
     const newSearch = params.toString();
@@ -104,7 +106,7 @@ const Products = () => {
               <div className="mb-4">
                 <Label htmlFor="category" className="mb-2 block">Category</Label>
                 <Select 
-                  value={category} 
+                  value={category || allCategoriesOption} 
                   onValueChange={setCategory}
                 >
                   <SelectTrigger id="category">
@@ -112,8 +114,8 @@ const Products = () => {
                   </SelectTrigger>
                   <SelectContent>
                     {categories.map((cat) => (
-                      <SelectItem key={cat || "all"} value={cat}>
-                        {cat ? cat.charAt(0).toUpperCase() + cat.slice(1) : "All Categories"}
+                      <SelectItem key={cat} value={cat}>
+                        {cat === allCategoriesOption ? "All Categories" : cat.charAt(0).toUpperCase() + cat.slice(1)}
                       </SelectItem>
                     ))}
                   </SelectContent>
@@ -173,7 +175,7 @@ const Products = () => {
                 variant="outline" 
                 className="mt-4 w-full"
                 onClick={() => {
-                  setCategory("");
+                  setCategory(allCategoriesOption);
                   setInStockOnly(false);
                   setPriceRange([0, 1500]);
                   setSort("featured");
@@ -211,7 +213,7 @@ const Products = () => {
                 </p>
                 <Button 
                   onClick={() => {
-                    setCategory("");
+                    setCategory(allCategoriesOption);
                     setSearchQuery("");
                     setInStockOnly(false);
                     setPriceRange([0, 1500]);
