@@ -1,18 +1,6 @@
-# Welcome to your Lovable project
+# Welcome to Mini Ecommerce store
 
-## Project info
 
-**URL**: https://lovable.dev/projects/6c5a2149-fab9-4a4a-a61a-f5226f3ac475
-
-## How can I edit this code?
-
-There are several ways of editing your application.
-
-**Use Lovable**
-
-Simply visit the [Lovable Project](https://lovable.dev/projects/6c5a2149-fab9-4a4a-a61a-f5226f3ac475) and start prompting.
-
-Changes made via Lovable will be committed automatically to this repo.
 
 **Use your preferred IDE**
 
